@@ -208,7 +208,7 @@ document.addEventListener('click', e => {
   if(popup.classList.contains('show') && !popup.contains(e.target)) closePopup();
 });
 
-window.onload = initMap;
+kakao.maps.load(function() { initMap(); });
 </script>
 </body>
 </html>
