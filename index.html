@@ -183,7 +183,7 @@ function closePopup() {
 
 document.addEventListener('click', e => {
   const popup = document.getElementById('popup');
-  if(popup.classList.contains('show') && !popup.contains(e.target)) closePopup();
+  if(popup.classList.contains('show') && !popup.contains(e.target) && !e.target.closest('#map')) closePopup();
 });
 </script>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9ddafafd50b0d86a88eda2b9609d4567&libraries=services"></script>
