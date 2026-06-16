@@ -89,8 +89,10 @@
   <button class="popup-close" onclick="closePopup()">✕</button>
   <div class="popup-title" id="popupTitle"></div>
   <div class="popup-tag" id="popupTag"></div>
+  <div class="popup-row"><span class="popup-icon">📅</span><span class="popup-label">장날</span><span class="popup-value" id="popupOpn"></span></div>
   <div class="popup-row"><span class="popup-icon">📍</span><span class="popup-label">주소</span><span class="popup-value" id="popupAddr"></span></div>
-  <div class="popup-row"><span class="popup-icon">🏙️</span><span class="popup-label">지역</span><span class="popup-value" id="popupSido"></span></div>
+  <div class="popup-row"><span class="popup-icon">🛒</span><span class="popup-label">취급품목</span><span class="popup-value" id="popupItems"></span></div>
+  <div class="popup-row"><span class="popup-icon">📞</span><span class="popup-label">전화</span><span class="popup-value" id="popupTel"></span></div>
   <div class="popup-row"><span class="popup-icon">🅿️</span><span class="popup-label">주차</span><span class="popup-value" id="popupPark"></span></div>
 </div>
 <script>
@@ -171,8 +173,10 @@ function setChip(val, el) {
 function showPopup(item) {
   document.getElementById('popupTitle').textContent = item.name || '';
   document.getElementById('popupTag').textContent = item.type || '전통시장';
+  document.getElementById('popupOpn').textContent = item.opn || '정보없음';
   document.getElementById('popupAddr').textContent = item.addr || '정보없음';
-  document.getElementById('popupSido').textContent = `${item.sido || ''} ${item.sigungu || ''}`;
+  document.getElementById('popupItems').textContent = item.items || '정보없음';
+  document.getElementById('popupTel').textContent = item.tel || '정보없음';
   document.getElementById('popupPark').textContent = item.park === 'Y' ? '있음 🅿️' : '없음';
   document.getElementById('popup').classList.add('show');
 }
