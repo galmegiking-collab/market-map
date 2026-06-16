@@ -26,7 +26,6 @@
   .popup.show { display: block; }
   .popup-handle { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 16px; }
   .popup-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-  .popup-tag { display: inline-block; background: var(--honey-light); color: var(--honey-dark); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 14px; }
   .popup-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 14px; align-items: flex-start; }
   .popup-icon { font-size: 15px; flex-shrink: 0; }
   .popup-label { color: var(--muted); flex-shrink: 0; width: 48px; }
@@ -52,12 +51,6 @@
     <option value="강원">강원</option><option value="충북">충북</option><option value="충남">충남</option>
     <option value="전북">전북</option><option value="전남">전남</option><option value="경북">경북</option>
     <option value="경남">경남</option><option value="제주">제주</option>
-  </select>
-  <select id="typeSelect" onchange="filterMarkers()">
-    <option value="">🏪 유형 전체</option>
-    <option value="전통시장">전통시장</option>
-    <option value="상점가">상점가</option>
-    <option value="인정시장">인정시장</option>
   </select>
 </div>
 <div class="filter-bar">
@@ -88,7 +81,6 @@
   <div class="popup-handle"></div>
   <button class="popup-close" onclick="closePopup()">✕</button>
   <div class="popup-title" id="popupTitle"></div>
-  <div class="popup-tag" id="popupTag"></div>
   <div class="popup-row"><span class="popup-icon">📅</span><span class="popup-label">장날</span><span class="popup-value" id="popupOpn"></span></div>
   <div class="popup-row"><span class="popup-icon">📍</span><span class="popup-label">주소</span><span class="popup-value" id="popupAddr"></span></div>
   <div class="popup-row"><span class="popup-icon">🛒</span><span class="popup-label">취급품목</span><span class="popup-value" id="popupItems"></span></div>
@@ -105,6 +97,32 @@ const regionCoords = {
   '전북':[35.716,127.108],'전남':[34.816,126.992],'경북':[36.576,128.888],
   '경남':[35.238,128.257],'제주':[33.499,126.543]
 };
+
+// 오늘 장날 체크
+function isTodayMarket(opn) {
+  if(!opn) return false;
+  const today = new Date().getDate(); // 오늘 날짜 (1~31)
+  const nums = opn.match(/\d+/g);
+  if(!nums) return false;
+  return nums.some(n => today % 10 === parseInt(n) % 10 && parseInt(n) <= 10);
+}
+
+function getMarkerColor(item) {
+  if(isTodayMarket(item.opn)) return '#27AE60'; // 초록 - 오늘 장날
+  return '#4A90D9'; // 파랑 - 그외
+}
+
+function makeMarkerImage(color) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">
+    <path d="M14 0C6.3 0 0 6.3 0 14c0 9.8 14 22 14 22s14-12.2 14-22C28 6.3 21.7 0 14 0z" fill="${color}"/>
+    <circle cx="14" cy="14" r="6" fill="white"/>
+  </svg>`;
+  return new kakao.maps.MarkerImage(
+    'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg),
+    new kakao.maps.Size(28, 36),
+    { offset: new kakao.maps.Point(14, 36) }
+  );
+}
 
 function initMap() {
   map = new kakao.maps.Map(document.getElementById('map'), {
@@ -133,6 +151,7 @@ function renderMarkers(data) {
     if(!item.lat || !item.lng) return;
     var marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(item.lat, item.lng),
+      image: makeMarkerImage(getMarkerColor(item)),
       map: map,
       clickable: true
     });
@@ -148,12 +167,10 @@ function renderMarkers(data) {
 
 function filterMarkers() {
   const sido = document.getElementById('sidoSelect').value;
-  const type = document.getElementById('typeSelect').value;
   const filtered = allData.filter(item => {
     const sidoOk = !sido || item.sido === sido;
-    const typeOk = !type || item.type === type;
     const chipOk = currentChip === '전체' || item.sido === currentChip;
-    return sidoOk && typeOk && chipOk;
+    return sidoOk && chipOk;
   });
   renderMarkers(filtered);
   const target = sido || currentChip;
@@ -172,7 +189,6 @@ function setChip(val, el) {
 
 function showPopup(item) {
   document.getElementById('popupTitle').textContent = item.name || '';
-  document.getElementById('popupTag').textContent = item.type || '전통시장';
   document.getElementById('popupOpn').textContent = item.opn || '정보없음';
   document.getElementById('popupAddr').textContent = item.addr || '정보없음';
   document.getElementById('popupItems').textContent = item.items || '정보없음';
