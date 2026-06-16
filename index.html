@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>🍯 꿀단지 전통시장 지도</title>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9ddafafd50b0d86a88eda2b9609d4567&libraries=services"></script>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9ddafafd50b0d86a88eda2b9609d4567&libraries=services"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
   :root {
@@ -206,7 +206,7 @@ async function loadData() {
 
   try {
     while(true) {
-      const url = `https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_P_TRADSIJANG&key=${VWORLD_KEY}&domain=https://fantastic-panda-4f9102.netlify.app&format=json&size=1000&page=${page}&geometry=true&attribute=true`;
+      const url = `https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_P_TRADSIJANG&key=${VWORLD_KEY}&domain=https://galmegiking-collab.github.io&format=json&size=1000&page=${page}&geometry=true&attribute=true`;
       const res = await fetch(url);
       const json = await res.json();
       if(json.response?.status !== 'OK') break;
