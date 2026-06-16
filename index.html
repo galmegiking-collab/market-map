@@ -18,169 +18,93 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
-
-  .top-bar {
-    background: var(--honey);
-    padding: 10px 16px;
-    display: flex; align-items: center; justify-content: space-between;
-    flex-shrink: 0; z-index: 100;
-  }
+  .top-bar { background: var(--honey); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; z-index: 100; }
   .top-bar h1 { font-size: 16px; font-weight: 900; color: white; }
-  .top-bar a {
-    font-size: 12px; color: white;
-    background: rgba(255,255,255,0.25);
-    padding: 4px 10px; border-radius: 20px; text-decoration: none;
-  }
-
-  .search-bar {
-    background: white; border-bottom: 1px solid var(--border);
-    padding: 8px 12px; display: flex; gap: 8px; flex-shrink: 0;
-  }
-  .search-bar select {
-    flex: 1; padding: 8px 10px;
-    border: 1.5px solid var(--border); border-radius: 10px;
-    font-family: inherit; font-size: 14px; background: white; outline: none;
-  }
+  .top-bar a { font-size: 12px; color: white; background: rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 20px; text-decoration: none; }
+  .search-bar { background: white; border-bottom: 1px solid var(--border); padding: 8px 12px; display: flex; gap: 8px; flex-shrink: 0; }
+  .search-bar select { flex: 1; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; background: white; outline: none; }
   .search-bar select:focus { border-color: var(--honey); }
-
-  .filter-bar {
-    background: white; padding: 8px 12px;
-    display: flex; gap: 6px; overflow-x: auto; flex-shrink: 0;
-    border-bottom: 1px solid var(--border);
-  }
+  .filter-bar { background: white; padding: 8px 12px; display: flex; gap: 6px; overflow-x: auto; flex-shrink: 0; border-bottom: 1px solid var(--border); }
   .filter-bar::-webkit-scrollbar { display: none; }
-  .chip {
-    padding: 5px 12px; border-radius: 20px;
-    border: 1.5px solid var(--border); background: white;
-    font-size: 12px; cursor: pointer; white-space: nowrap;
-    font-family: inherit; color: var(--text); flex-shrink: 0;
-  }
+  .chip { padding: 5px 12px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; cursor: pointer; white-space: nowrap; font-family: inherit; color: var(--text); flex-shrink: 0; }
   .chip.active { background: var(--honey); border-color: var(--honey); color: white; font-weight: 700; }
-
   #map { flex: 1; width: 100%; }
-
-  .count-badge {
-    position: fixed; top: 120px; right: 12px;
-    background: white; border-radius: 10px; padding: 6px 12px;
-    font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    z-index: 100; color: var(--muted);
-  }
+  .count-badge { position: fixed; top: 120px; right: 12px; background: white; border-radius: 10px; padding: 6px 12px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 100; color: var(--muted); }
   .count-badge strong { color: var(--honey-dark); }
-
-  /* 팝업 */
-  .popup {
-    display: none; position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: white; border-radius: 20px 20px 0 0;
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-    padding: 20px 20px 40px; z-index: 200;
-    animation: slideUp 0.25s ease;
-    max-height: 60vh; overflow-y: auto;
-  }
+  .popup { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; border-radius: 20px 20px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.15); padding: 20px 20px 40px; z-index: 200; animation: slideUp 0.25s ease; max-height: 60vh; overflow-y: auto; }
   @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
   .popup.show { display: block; }
   .popup-handle { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 16px; }
   .popup-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
-  .popup-tag {
-    display: inline-block; background: var(--honey-light);
-    color: var(--honey-dark); font-size: 12px; font-weight: 700;
-    padding: 3px 10px; border-radius: 20px; margin-bottom: 14px;
-  }
+  .popup-tag { display: inline-block; background: var(--honey-light); color: var(--honey-dark); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 14px; }
   .popup-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 14px; align-items: flex-start; }
   .popup-icon { font-size: 15px; flex-shrink: 0; }
   .popup-label { color: var(--muted); flex-shrink: 0; width: 48px; }
   .popup-value { color: var(--text); flex: 1; line-height: 1.4; }
-  .popup-close {
-    position: absolute; top: 20px; right: 20px;
-    background: #f0f0f0; border: none; border-radius: 50%;
-    width: 32px; height: 32px; font-size: 16px; cursor: pointer;
-  }
-
-  .loading {
-    position: fixed; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: white; border-radius: 16px;
-    padding: 24px 32px; text-align: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 300;
-  }
-  .spinner {
-    width: 36px; height: 36px;
-    border: 3px solid var(--honey-light); border-top-color: var(--honey);
-    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px;
-  }
+  .popup-close { position: absolute; top: 20px; right: 20px; background: #f0f0f0; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; cursor: pointer; }
+  .loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 24px 32px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 300; }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--honey-light); border-top-color: var(--honey); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading p { font-size: 14px; color: var(--muted); }
 </style>
 </head>
 <body>
-
 <div class="top-bar">
   <h1>🍯 꿀단지 전통시장 지도</h1>
   <a href="https://blog.naver.com/honey-pot-" target="_blank">블로그 구독 →</a>
 </div>
-
 <div class="search-bar">
   <select id="sidoSelect" onchange="filterMarkers()">
     <option value="">📍 전국 전체</option>
-    <option value="서울">서울</option>
-    <option value="부산">부산</option>
-    <option value="대구">대구</option>
-    <option value="인천">인천</option>
-    <option value="광주">광주</option>
-    <option value="대전">대전</option>
-    <option value="울산">울산</option>
-    <option value="세종">세종</option>
-    <option value="경기">경기</option>
-    <option value="강원">강원</option>
-    <option value="충북">충북</option>
-    <option value="충남">충남</option>
-    <option value="전북">전북</option>
-    <option value="전남">전남</option>
-    <option value="경북">경북</option>
-    <option value="경남">경남</option>
-    <option value="제주">제주</option>
+    <option value="서울">서울</option><option value="부산">부산</option><option value="대구">대구</option>
+    <option value="인천">인천</option><option value="광주">광주</option><option value="대전">대전</option>
+    <option value="울산">울산</option><option value="세종">세종</option><option value="경기">경기</option>
+    <option value="강원">강원</option><option value="충북">충북</option><option value="충남">충남</option>
+    <option value="전북">전북</option><option value="전남">전남</option><option value="경북">경북</option>
+    <option value="경남">경남</option><option value="제주">제주</option>
   </select>
-  <select id="opnSelect" onchange="filterMarkers()">
-    <option value="">📅 장날 전체</option>
-    <option value="상설">상설장</option>
-    <option value="5일장">5일장</option>
-    <option value="3일장">3일장</option>
-    <option value="주1회">주1회</option>
+  <select id="typeSelect" onchange="filterMarkers()">
+    <option value="">🏪 유형 전체</option>
+    <option value="전통시장">전통시장</option>
+    <option value="상점가">상점가</option>
+    <option value="인정시장">인정시장</option>
   </select>
 </div>
-
 <div class="filter-bar">
   <button class="chip active" onclick="setChip('전체', this)">전체</button>
-  <button class="chip" onclick="setChip('상설', this)">🏪 상설장</button>
-  <button class="chip" onclick="setChip('5일장', this)">📅 5일장</button>
-  <button class="chip" onclick="setChip('3일장', this)">📅 3일장</button>
-  <button class="chip" onclick="setChip('주1회', this)">📅 주1회</button>
+  <button class="chip" onclick="setChip('서울', this)">서울</button>
+  <button class="chip" onclick="setChip('경기', this)">경기</button>
+  <button class="chip" onclick="setChip('부산', this)">부산</button>
+  <button class="chip" onclick="setChip('대구', this)">대구</button>
+  <button class="chip" onclick="setChip('인천', this)">인천</button>
+  <button class="chip" onclick="setChip('광주', this)">광주</button>
+  <button class="chip" onclick="setChip('대전', this)">대전</button>
+  <button class="chip" onclick="setChip('강원', this)">강원</button>
+  <button class="chip" onclick="setChip('충북', this)">충북</button>
+  <button class="chip" onclick="setChip('충남', this)">충남</button>
+  <button class="chip" onclick="setChip('전북', this)">전북</button>
+  <button class="chip" onclick="setChip('전남', this)">전남</button>
+  <button class="chip" onclick="setChip('경북', this)">경북</button>
+  <button class="chip" onclick="setChip('경남', this)">경남</button>
+  <button class="chip" onclick="setChip('제주', this)">제주</button>
 </div>
-
 <div id="map"></div>
 <div class="count-badge" id="countBadge">불러오는 중...</div>
-
 <div class="loading" id="loading">
   <div class="spinner"></div>
   <p>전통시장 정보를<br>불러오는 중...</p>
 </div>
-
 <div class="popup" id="popup">
   <div class="popup-handle"></div>
   <button class="popup-close" onclick="closePopup()">✕</button>
   <div class="popup-title" id="popupTitle"></div>
   <div class="popup-tag" id="popupTag"></div>
-  <div class="popup-row"><span class="popup-icon">📅</span><span class="popup-label">장날</span><span class="popup-value" id="popupOpn"></span></div>
   <div class="popup-row"><span class="popup-icon">📍</span><span class="popup-label">주소</span><span class="popup-value" id="popupAddr"></span></div>
-  <div class="popup-row"><span class="popup-icon">🛒</span><span class="popup-label">취급품목</span><span class="popup-value" id="popupItems"></span></div>
-  <div class="popup-row"><span class="popup-icon">📞</span><span class="popup-label">전화</span><span class="popup-value" id="popupTel"></span></div>
+  <div class="popup-row"><span class="popup-icon">🏙️</span><span class="popup-label">지역</span><span class="popup-value" id="popupSido"></span></div>
   <div class="popup-row"><span class="popup-icon">🅿️</span><span class="popup-label">주차</span><span class="popup-value" id="popupPark"></span></div>
 </div>
-
 <script>
-const VWORLD_KEY = '31C7EEF8-355F-3617-9A2C-DAA6408869EB';
 let map, allData = [], allMarkers = [], currentChip = '전체';
-
 const regionCoords = {
   '서울':[37.566,126.978],'부산':[35.179,129.075],'대구':[35.871,128.601],
   '인천':[37.456,126.705],'광주':[35.160,126.852],'대전':[36.350,127.385],
@@ -191,8 +115,7 @@ const regionCoords = {
 };
 
 function initMap() {
-  const container = document.getElementById('map');
-  map = new kakao.maps.Map(container, {
+  map = new kakao.maps.Map(document.getElementById('map'), {
     center: new kakao.maps.LatLng(36.5, 127.5),
     level: 13
   });
@@ -201,21 +124,9 @@ function initMap() {
 
 async function loadData() {
   document.getElementById('loading').style.display = 'block';
-  allData = [];
-  let page = 1;
-
   try {
-    while(true) {
-      const url = `https://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_P_TRADSIJANG&key=${VWORLD_KEY}&domain=https://galmegiking-collab.github.io&format=json&size=1000&page=${page}&geometry=true&attribute=true`;
-      const res = await fetch(url);
-      const json = await res.json();
-      if(json.response?.status !== 'OK') break;
-      const features = json.response?.result?.featureCollection?.features || [];
-      if(!features.length) break;
-      allData = allData.concat(features);
-      if(features.length < 1000) break;
-      page++;
-    }
+    const res = await fetch('markets.json');
+    allData = await res.json();
     document.getElementById('loading').style.display = 'none';
     renderMarkers(allData);
   } catch(e) {
@@ -223,26 +134,19 @@ async function loadData() {
   }
 }
 
-function getMarkerColor(opn) {
-  if(!opn) return '#aaa';
-  if(opn.includes('상설')) return '#4A90D9';
-  if(opn.includes('5일')) return '#27AE60';
-  if(opn.includes('3일')) return '#E67E22';
-  return '#9B59B6';
+function getMarkerColor(type) {
+  if(!type) return '#aaa';
+  if(type.includes('전통')) return '#27AE60';
+  if(type.includes('상점')) return '#4A90D9';
+  return '#E67E22';
 }
 
 function renderMarkers(data) {
   allMarkers.forEach(m => m.setMap(null));
   allMarkers = [];
-
-  data.forEach(f => {
-    const props = f.properties;
-    const geom  = f.geometry;
-    if(!geom?.coordinates) return;
-    const [lng, lat] = geom.coordinates;
-    if(!lat || !lng) return;
-
-    const color = getMarkerColor(props.opn_per);
+  data.forEach(item => {
+    if(!item.lat || !item.lng) return;
+    const color = getMarkerColor(item.type);
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">
       <path d="M14 0C6.3 0 0 6.3 0 14c0 9.8 14 22 14 22s14-12.2 14-22C28 6.3 21.7 0 14 0z" fill="${color}"/>
       <circle cx="14" cy="14" r="6" fill="white"/>
@@ -253,34 +157,28 @@ function renderMarkers(data) {
       { offset: new kakao.maps.Point(14, 36) }
     );
     const marker = new kakao.maps.Marker({
-      position: new kakao.maps.LatLng(lat, lng),
-      image: markerImage,
-      map: map
+      position: new kakao.maps.LatLng(item.lat, item.lng),
+      image: markerImage, map: map
     });
-    kakao.maps.event.addListener(marker, 'click', () => showPopup(props));
+    kakao.maps.event.addListener(marker, 'click', () => showPopup(item));
     allMarkers.push(marker);
   });
-
   document.getElementById('countBadge').innerHTML = `총 <strong>${data.length}</strong>개 시장`;
 }
 
 function filterMarkers() {
   const sido = document.getElementById('sidoSelect').value;
-  const opn  = document.getElementById('opnSelect').value;
-
-  const filtered = allData.filter(f => {
-    const p = f.properties;
-    const addr = (p.adr_road || '') + (p.adr_jibun || '');
-    const sidoOk = !sido || addr.includes(sido);
-    const opnOk  = !opn  || (p.opn_per || '').includes(opn);
-    const chipOk = currentChip === '전체' || (p.opn_per || '').includes(currentChip);
-    return sidoOk && opnOk && chipOk;
+  const type = document.getElementById('typeSelect').value;
+  const filtered = allData.filter(item => {
+    const sidoOk = !sido || item.sido === sido;
+    const typeOk = !type || item.type === type;
+    const chipOk = currentChip === '전체' || item.sido === currentChip;
+    return sidoOk && typeOk && chipOk;
   });
-
   renderMarkers(filtered);
-
-  if(sido && regionCoords[sido]) {
-    map.setCenter(new kakao.maps.LatLng(...regionCoords[sido]));
+  const target = sido || currentChip;
+  if(target && regionCoords[target]) {
+    map.setCenter(new kakao.maps.LatLng(...regionCoords[target]));
     map.setLevel(9);
   }
 }
@@ -292,14 +190,12 @@ function setChip(val, el) {
   filterMarkers();
 }
 
-function showPopup(p) {
-  document.getElementById('popupTitle').textContent = p.name || '';
-  document.getElementById('popupTag').textContent   = p.category || '전통시장';
-  document.getElementById('popupOpn').textContent   = p.opn_per || '정보없음';
-  document.getElementById('popupAddr').textContent  = p.adr_road || p.adr_jibun || '정보없음';
-  document.getElementById('popupItems').textContent = (p.items || '정보없음').replace(/\+/g, ', ');
-  document.getElementById('popupTel').textContent   = p.tel_num || '정보없음';
-  document.getElementById('popupPark').textContent  = p.park === 'Y' ? '있음 🅿️' : '없음';
+function showPopup(item) {
+  document.getElementById('popupTitle').textContent = item.name || '';
+  document.getElementById('popupTag').textContent = item.type || '전통시장';
+  document.getElementById('popupAddr').textContent = item.addr || '정보없음';
+  document.getElementById('popupSido').textContent = `${item.sido || ''} ${item.sigungu || ''}`;
+  document.getElementById('popupPark').textContent = item.park === 'Y' ? '있음 🅿️' : '없음';
   document.getElementById('popup').classList.add('show');
 }
 
