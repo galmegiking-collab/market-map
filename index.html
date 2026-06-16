@@ -4,18 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>🍯 꿀단지 전통시장 지도</title>
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9ddafafd50b0d86a88eda2b9609d4567&libraries=services&autoload=false"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
-  :root {
-    --honey: #F5A623;
-    --honey-dark: #D4881A;
-    --honey-light: #FEF3DC;
-    --bg: #FFFBF3;
-    --text: #1A1A1A;
-    --muted: #888;
-    --border: #F0E6D0;
-  }
+  :root { --honey: #F5A623; --honey-dark: #D4881A; --honey-light: #FEF3DC; --bg: #FFFBF3; --text: #1A1A1A; --muted: #888; --border: #F0E6D0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
   .top-bar { background: var(--honey); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; z-index: 100; }
@@ -23,7 +14,6 @@
   .top-bar a { font-size: 12px; color: white; background: rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 20px; text-decoration: none; }
   .search-bar { background: white; border-bottom: 1px solid var(--border); padding: 8px 12px; display: flex; gap: 8px; flex-shrink: 0; }
   .search-bar select { flex: 1; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; background: white; outline: none; }
-  .search-bar select:focus { border-color: var(--honey); }
   .filter-bar { background: white; padding: 8px 12px; display: flex; gap: 6px; overflow-x: auto; flex-shrink: 0; border-bottom: 1px solid var(--border); }
   .filter-bar::-webkit-scrollbar { display: none; }
   .chip { padding: 5px 12px; border-radius: 20px; border: 1.5px solid var(--border); background: white; font-size: 12px; cursor: pointer; white-space: nowrap; font-family: inherit; color: var(--text); flex-shrink: 0; }
@@ -134,33 +124,18 @@ async function loadData() {
   }
 }
 
-function getMarkerColor(type) {
-  if(!type) return '#aaa';
-  if(type.includes('전통')) return '#27AE60';
-  if(type.includes('상점')) return '#4A90D9';
-  return '#E67E22';
-}
-
 function renderMarkers(data) {
   allMarkers.forEach(m => m.setMap(null));
   allMarkers = [];
   data.forEach(item => {
     if(!item.lat || !item.lng) return;
-    const color = getMarkerColor(item.type);
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">
-      <path d="M14 0C6.3 0 0 6.3 0 14c0 9.8 14 22 14 22s14-12.2 14-22C28 6.3 21.7 0 14 0z" fill="${color}"/>
-      <circle cx="14" cy="14" r="6" fill="white"/>
-    </svg>`;
-    const markerImage = new kakao.maps.MarkerImage(
-      'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg),
-      new kakao.maps.Size(28, 36),
-      { offset: new kakao.maps.Point(14, 36) }
-    );
     const marker = new kakao.maps.Marker({
       position: new kakao.maps.LatLng(item.lat, item.lng),
-      image: markerImage, map: map
+      map: map
     });
-    kakao.maps.event.addListener(marker, 'click', () => showPopup(item));
+    kakao.maps.event.addListener(marker, 'click', function() {
+      showPopup(item);
+    });
     allMarkers.push(marker);
   });
   document.getElementById('countBadge').innerHTML = `총 <strong>${data.length}</strong>개 시장`;
@@ -207,8 +182,7 @@ document.addEventListener('click', e => {
   const popup = document.getElementById('popup');
   if(popup.classList.contains('show') && !popup.contains(e.target)) closePopup();
 });
-
-kakao.maps.load(function() { initMap(); });
 </script>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9ddafafd50b0d86a88eda2b9609d4567&libraries=services&autoload=false&onload=initMap"></script>
 </body>
 </html>
